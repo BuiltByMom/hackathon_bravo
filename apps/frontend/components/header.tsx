@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "@/context/useAuthContext";
 import { LogoutButton } from "@/components/logout-button";
+import { loginStart, registerStart } from "@/lib/utils";
 
 export function Header() {
   const { user, isLoading } = useAuth();
@@ -26,18 +27,18 @@ export function Header() {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Link
-                href="/login"
+              <button
+                onClick={() => loginStart("name")}
                 className="text-sm font-medium text-muted-foreground hover:text-primary"
               >
                 Log in
-              </Link>
-              <Link
-                href="/signup"
+              </button>
+              <button
+                onClick={() => registerStart("name")}
                 className="text-sm font-medium bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90"
               >
-                Sign up
-              </Link>
+                Register
+              </button>
             </div>
           )}
         </div>

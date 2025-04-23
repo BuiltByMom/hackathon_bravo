@@ -27,7 +27,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   // Redirect if no user in localStorage or SWR
   useEffect(() => {
     if (!isLoading && !user && !localUser) {
-      router.push("/login");
+      router.push("/");
     }
   }, [user, localUser, isLoading, router]);
 

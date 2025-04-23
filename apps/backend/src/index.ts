@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { authRouter } from './routes/auth';
 import { contactsRouter } from './routes/contacts';
+import { passkeyRouter } from './routes/passkey';
 // Load environment variables
 dotenv.config();
 
@@ -11,6 +12,7 @@ const port = process.env.PORT || 8080;
 
 // Request logging middleware
 app.use((req, _, next) => {
+  console.log(`🔵 [${req.method}] ${req.url}`);
   next();
 });
 
@@ -21,6 +23,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRouter);
 app.use('/api/contacts', contactsRouter);
+app.use('/api/passkey', passkeyRouter);
 // Health check endpoint
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
