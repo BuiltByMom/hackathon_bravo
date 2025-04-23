@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { authRouter } from './routes/auth';
-
+import { contactsRouter } from './routes/contacts';
 // Load environment variables
 dotenv.config();
 
@@ -11,7 +11,6 @@ const port = process.env.PORT || 8080;
 
 // Request logging middleware
 app.use((req, _, next) => {
-  console.log(`🔵 [${req.method}] ${req.url}`);
   next();
 });
 
@@ -21,15 +20,15 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRouter);
-
+app.use('/api/contacts', contactsRouter);
 // Health check endpoint
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
-}); 
+});
 
 // Start server
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
   console.log(`🔗 API URL: http://localhost:${port}`);
   console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
-}); 
+});

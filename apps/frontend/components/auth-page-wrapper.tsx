@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/context/useAuthContext";
 
 export function AuthPageWrapper({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();

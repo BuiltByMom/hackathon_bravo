@@ -107,9 +107,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to sign up");
       }
-
-      // After successful signup, log the user in
-      await login(email, password, tag);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unknown error occurred"

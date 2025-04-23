@@ -6,7 +6,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/context/useAuthContext";
 import {
   Select,
   SelectContent,
@@ -14,6 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { IconAppAddressBook } from "./common/icons/IconAddressBook";
+import Link from "next/link";
 
 const ASSETS = [
   { id: "eth", name: "Ethereum", amount: "1 ETH" },
@@ -76,7 +78,12 @@ export function SendAssetForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="email">Recipient Email</Label>
+        <div className="flex items-center gap-2">
+          <Label htmlFor="email">Recipient Email</Label>
+          <Link href="/contacts">
+            <IconAppAddressBook className="w-4 h-4" />
+          </Link>
+        </div>
         <Input
           id="email"
           type="email"

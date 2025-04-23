@@ -6,6 +6,7 @@ interface JwtPayload {
 }
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       userId?: string;
@@ -13,11 +14,7 @@ declare global {
   }
 }
 
-export const authMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -33,11 +30,7 @@ export const authMiddleware = (
       return;
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || 'fallback-secret'
-    ) as JwtPayload;
-
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as JwtPayload;
 
     req.userId = decoded.userId;
     next();
@@ -45,4 +38,4 @@ export const authMiddleware = (
     console.error('🔴 [AUTH] Error verifying token:', error);
     res.status(401).json({ error: 'Invalid token' });
   }
-}; 
+};

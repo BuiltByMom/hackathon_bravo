@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/context/useAuthContext";
 import { LogoutButton } from "@/components/logout-button";
 
 export function Header() {

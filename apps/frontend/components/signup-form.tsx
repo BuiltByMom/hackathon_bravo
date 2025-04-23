@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/context/useAuthContext";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -38,9 +38,12 @@ export function SignUpForm() {
     setLoading(true);
 
     try {
-      await signup(email, password, tag);
-      router.push("/");
+      console.log(email, password, tag);
+      const user = await signup(email, password, tag);
+      console.log(user);
+      router.push("/login");
     } catch (err) {
+      console.log(err);
       // Error is handled by the auth context
     } finally {
       setLoading(false);

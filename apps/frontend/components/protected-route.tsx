@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/context/useAuthContext";
 import { User } from "@sophon/shared";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
