@@ -1,5 +1,6 @@
 "use client";
 
+import { LoginResponse, User } from "@/lib/types";
 import {
   createContext,
   useContext,
@@ -7,8 +8,6 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-
-import { User, LoginResponse } from "@sophon/shared";
 
 interface AuthContextType {
   user: User | null;
