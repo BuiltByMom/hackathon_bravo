@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.contactsRouter = void 0;
+const express_1 = require("express");
+const contacts_1 = require("../controllers/contacts");
+const router = (0, express_1.Router)();
+router.get('/:userId', contacts_1.getContacts);
+router.post('/', contacts_1.createContact);
+router.delete('/:userId/:id', contacts_1.deleteContact);
+exports.contactsRouter = router;
