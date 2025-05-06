@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useContact, CreateContactInput } from "@/context/useGetContacts";
 import { motion } from "framer-motion";
 import { IconClose } from "@/components/common/icons/IconClose";
@@ -24,6 +23,8 @@ const ContactsPage = () => {
       id: "",
       email: "",
       tag: "",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   });
 
@@ -38,7 +39,13 @@ const ContactsPage = () => {
         tag: "",
         address: "",
         userId: "",
-        user: { id: "", email: "", tag: "" },
+        user: {
+          id: "",
+          email: "",
+          tag: "",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       });
     }
   };
