@@ -11,6 +11,7 @@ const port = process.env.PORT || 8080;
 
 // Request logging middleware
 app.use((req, _, next) => {
+  console.log(`${req.method} ${req.url}`);
   next();
 });
 
