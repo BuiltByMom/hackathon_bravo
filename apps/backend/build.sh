@@ -3,17 +3,11 @@
 # Clean the dist directory
 rm -rf dist
 
-# Build shared package
-cd ../../packages/shared
-npm install
-npm run build
-cd ../../apps/backend
-
 # Install dependencies
 npm install
 
 # Build TypeScript
-npm run build
+npx tsc
 
 # Ensure the dist directory exists
 mkdir -p dist
