@@ -30,13 +30,19 @@ const loginSchema = z.object({
 });
 
 export const signup = async (req: Request, res: Response): Promise<void> => {
+  console.log('[SIGNUP] Signup request received:', req.body);
   try {
     // Validate request body
     const { email, password, tag } = signupSchema.parse(req.body);
 
+    console.log('[SIGNUP] Signup request received:', { email, password, tag });
+
     // Check if user already exists with email or tag
     const existingUserByEmail = userService.getByEmail(email);
     const existingUserByTag = userService.getByTag(tag);
+
+    console.log('[SIGNUP] Existing user by email:', existingUserByEmail);
+    console.log('[SIGNUP] Existing user by tag:', existingUserByTag);
 
     if (existingUserByEmail || existingUserByTag) {
       const duplicateField = existingUserByEmail ? 'email' : 'tag';
