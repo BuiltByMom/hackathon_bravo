@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 const port = 8080;
-const host = process.env.HOST || '172.86.69.254';
+const host = process.env.HOST || 'https://172.86.69.254';
 
 // Request logging middleware
 app.use((req, _, next) => {
