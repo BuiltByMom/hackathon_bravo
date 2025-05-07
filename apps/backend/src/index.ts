@@ -7,7 +7,8 @@ import { contactsRouter } from './routes/contacts';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = 8080;
+const host = process.env.HOST || '172.86.69.254';
 
 // Request logging middleware
 app.use((req, _, next) => {
@@ -28,8 +29,8 @@ app.get('/health', (_req, res) => {
 });
 
 // Start server
-app.listen(port, () => {
+app.listen(port, host, () => {
   console.log(`🚀 Server running on port ${port}`);
-  console.log(`🔗 API URL: http://localhost:${port}`);
+  console.log(`🔗 API URL: http://${host}:${port}`);
   console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
 });

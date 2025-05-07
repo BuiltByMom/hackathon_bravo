@@ -38,7 +38,7 @@ interface ContactContextType {
 
 const ContactContext = createContext<ContactContextType | undefined>(undefined);
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://172.86.69.254:8080";
 
 export function ContactProvider({ children }: { children: ReactNode }) {
   const { token, user } = useAuth();
