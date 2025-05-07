@@ -1,4 +1,4 @@
-import { User } from '@sophon/shared';
+import { User, CreateUserInput } from '@sophon/shared';
 import fs from 'fs';
 import path from 'path';
 import { Contact } from '../models/Contact';
@@ -54,7 +54,7 @@ export const userService = {
     return users.find((user) => user.tag === tag);
   },
 
-  create: (user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): User => {
+  create: (user: CreateUserInput): User => {
     const users = userService.getAll();
     const newUser: User = {
       ...user,

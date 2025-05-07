@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-
-const prisma = new PrismaClient();
+import { userService } from '../services/dataService';
+import { CreateUserInput, User } from '@sophon/shared';
 
 // Validation schemas
 const signupSchema = z.object({
@@ -35,14 +34,11 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     const { email, password, tag } = signupSchema.parse(req.body);
 
     // Check if user already exists with email or tag
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        OR: [{ email }, { tag }],
-      },
-    });
+    const existingUserByEmail = userService.getByEmail(email);
+    const existingUserByTag = userService.getByTag(tag);
 
-    if (existingUser) {
-      const duplicateField = existingUser.email === email ? 'email' : 'tag';
+    if (existingUserByEmail || existingUserByTag) {
+      const duplicateField = existingUserByEmail ? 'email' : 'tag';
       console.log(`❌ User already exists with ${duplicateField}`);
       res.status(400).json({
         message: `User already exists with this ${duplicateField}`,
@@ -51,13 +47,12 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Create user with provided hashed password
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password, // Using the provided hashed password
-        tag,
-      },
-    });
+    const userInput: CreateUserInput = {
+      email,
+      password, // Using the provided hashed password
+      tag,
+    };
+    const user = userService.create(userInput);
     console.log(`✅ User created with ID: ${user.id}`);
 
     // Generate JWT token
@@ -104,9 +99,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Find user by email or tag
-    const user = await prisma.user.findFirst({
-      where: loginType === 'email' ? { email: identifier } : { tag: identifier },
-    });
+    const user =
+      loginType === 'email' ? userService.getByEmail(identifier) : userService.getByTag(identifier);
 
     if (!user) {
       console.log(`🔴 [LOGIN] User not found with ${loginType}:`, { identifier });
@@ -115,7 +109,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Verify password (assuming it's already hashed)
-    if (password !== user.password) {
+    const typedUser = user as User & { password: string };
+    if (password !== typedUser.password) {
       console.log(`🔴 [LOGIN] Invalid password for user with ${loginType}:`, { identifier });
       res.status(401).json({ error: 'Invalid credentials' });
       return;

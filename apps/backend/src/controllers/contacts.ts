@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
-
-const prisma = new PrismaClient();
+import { contactService } from '../services/dataService';
 
 // Define a custom interface for the Request object that includes the user property
 interface AuthRequest extends Request {
@@ -26,15 +24,7 @@ export const getContacts = async (req: AuthRequest, res: Response): Promise<Resp
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    const contacts = await prisma.contact.findMany({
-      where: {
-        userId: userId,
-      },
-      orderBy: {
-        name: 'asc',
-      },
-    });
-
+    const contacts = contactService.getByUserId(userId);
     return res.status(200).json(contacts);
   } catch (error) {
     console.error('Error getting contacts:', error);
@@ -43,22 +33,16 @@ export const getContacts = async (req: AuthRequest, res: Response): Promise<Resp
 };
 
 // Get a single contact by ID
-export const getContact = async (req: AuthRequest, res: Response) => {
+export const getContact = async (req: AuthRequest, res: Response): Promise<Response> => {
   try {
     if (!req.user?.id) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
     const { id } = req.params;
+    const contact = contactService.getById(id);
 
-    const contact = await prisma.contact.findFirst({
-      where: {
-        id,
-        userId: req.user.id,
-      },
-    });
-
-    if (!contact) {
+    if (!contact || contact.userId !== req.user.id) {
       return res.status(404).json({ message: 'Contact not found' });
     }
 
@@ -79,34 +63,27 @@ export const createContact = async (req: AuthRequest, res: Response) => {
     const validatedData = createContactSchema.parse(req.body);
 
     // Check if a contact with the same email already exists for this user
-    const existingEmailContact = await prisma.contact.findFirst({
-      where: {
-        email: validatedData.email,
-        userId: req.body.user.id,
-      },
-    });
+    const existingContacts = contactService.getByUserId(req.body.user.id);
+    const existingEmailContact = existingContacts.find(
+      (contact) => contact.email === validatedData.email
+    );
 
     if (existingEmailContact) {
       return res.status(400).json({ message: 'A contact with this email already exists' });
     }
 
     // Check if a contact with the same tag already exists for this user
-    const existingTagContact = await prisma.contact.findFirst({
-      where: {
-        tag: validatedData.tag,
-        userId: req.body.user.id,
-      },
-    });
+    const existingTagContact = existingContacts.find(
+      (contact) => contact.tag === validatedData.tag
+    );
 
     if (existingTagContact) {
       return res.status(400).json({ message: 'A contact with this tag already exists' });
     }
 
-    const contact = await prisma.contact.create({
-      data: {
-        ...validatedData,
-        userId: req.body.user.id,
-      },
+    const contact = contactService.create({
+      ...validatedData,
+      userId: req.body.user.id,
     });
 
     return res.status(201).json(contact);
@@ -127,25 +104,18 @@ export const deleteContact = async (req: AuthRequest, res: Response): Promise<Re
     }
 
     const { id } = req.params;
+    const userId = req.params.userId;
 
     // Check if the contact exists and belongs to the user
-    const existingContact = await prisma.contact.findFirst({
-      where: {
-        id,
-        userId: req.params.userId,
-      },
-    });
-
-    if (!existingContact) {
+    const contact = contactService.getById(id);
+    if (!contact || contact.userId !== userId) {
       return res.status(404).json({ message: 'Contact not found' });
     }
 
-    await prisma.contact.delete({
-      where: {
-        id,
-        userId: req.params.userId,
-      },
-    });
+    const success = contactService.delete(id);
+    if (!success) {
+      return res.status(500).json({ message: 'Failed to delete contact' });
+    }
 
     return res.status(200).json({ message: 'Contact deleted successfully' });
   } catch (error) {
