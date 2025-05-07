@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL ?? "http://172.86.69.254:8080"}/api/auth/login`,
+        `${process.env.NEXT_PUBLIC_API_URL ?? "https://172.86.69.254:8080"}/api/auth/login`,
         {
           method: "POST",
           headers: {
@@ -92,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL ?? "http://172.86.69.254:8080"}/api/auth/signup`,
+        `${process.env.NEXT_PUBLIC_API_URL ?? "https://172.86.69.254:8080"}/api/auth/signup`,
         {
           method: "POST",
           headers: {

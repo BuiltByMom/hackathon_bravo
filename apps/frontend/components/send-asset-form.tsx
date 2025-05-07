@@ -53,7 +53,7 @@ export function SendAssetForm() {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL ?? "http://172.86.69.254:8080"}/api/send`,
+        `${process.env.NEXT_PUBLIC_API_URL ?? "https://172.86.69.254:8080"}/api/send`,
         {
           email,
           assetId,
