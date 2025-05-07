@@ -6,12 +6,12 @@
     "dev": "nodemon",
     "build": "./build.sh",
     "start": "node dist/index.js",
+    "start:prod": "NODE_ENV=production node dist/index.js",
     "test": "bun test",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"**/*.{ts,json}\""
   },
   "dependencies": {
-    "@sophon/shared": "0.1.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -35,5 +35,8 @@
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

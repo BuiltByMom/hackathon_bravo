@@ -9,8 +9,7 @@ import {
 } from "react";
 
 import { useAuth } from "./useAuthContext";
-import { User } from "@sophon/shared";
-
+import { User } from "@/lib/types";
 export interface Contact {
   id: string;
   name: string;

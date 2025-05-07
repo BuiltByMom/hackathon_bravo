@@ -1,4 +1,5 @@
-import { User, CreateUserInput } from '@sophon/shared';
+import { User } from '../models/User';
+import { CreateUserInput } from '../models/Contact';
 import fs from 'fs';
 import path from 'path';
 import { Contact } from '../models/Contact';

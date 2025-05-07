@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { userService } from '../services/dataService';
-import { CreateUserInput, User } from '@sophon/shared';
+import { User } from '../models/User';
+import { CreateUserInput } from '../models/Contact';
 
 // Validation schemas
 const signupSchema = z.object({
